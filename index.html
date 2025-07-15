@@ -49,16 +49,8 @@
         .card-delay-10 { animation-delay: 1.0s; }
         .card-delay-11 { animation-delay: 1.1s; }
 
-        /* Estilos para el botón de reproducción de audio */
-        .audio-player-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 1.5rem; /* Espacio superior */
-            margin-bottom: 2.5rem; /* Espacio inferior */
-        }
-
-        .play-button {
+        /* Estilos para los botones de reproducción y visualización de imagen */
+        .control-button {
             background-color: #3b82f6; /* Azul de Tailwind */
             color: white;
             border-radius: 9999px; /* Completamente redondo */
@@ -71,20 +63,84 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .play-button:hover {
+        .control-button:hover {
             background-color: #2563eb; /* Azul más oscuro al pasar el ratón */
             transform: scale(1.05);
         }
 
-        .play-button svg {
+        .control-button svg {
             width: 1.5rem;
             height: 1.5rem;
             fill: currentColor;
         }
 
-        .audio-controls {
-            display: none; /* Ocultar controles por defecto, se mostrarán con JS */
-            margin-left: 1rem;
+        /* Estilos para el modal de imagen */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Asegura que esté por encima de todo */
+            backdrop-filter: blur(5px); /* Efecto de desenfoque */
+            -webkit-backdrop-filter: blur(5px); /* Para compatibilidad con Safari */
+        }
+
+        .image-modal-content {
+            position: relative;
+            background-color: #1f2937; /* Fondo oscuro para el modal */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            max-height: 90%;
+            overflow: hidden; /* Para que la imagen no se salga del borde redondeado */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image-modal-content img {
+            max-width: 100%;
+            max-height: 80vh; /* Ajustar altura máxima para dejar espacio al botón de cerrar */
+            border-radius: 0.5rem;
+            object-fit: contain; /* Asegura que la imagen se ajuste sin recortarse */
+        }
+
+        .close-modal-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: #ef4444; /* Rojo de Tailwind */
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            z-index: 1001; /* Asegura que el botón de cerrar esté sobre la imagen */
+        }
+
+        .close-modal-button:hover {
+            background-color: #dc2626; /* Rojo más oscuro */
+            transform: scale(1.1);
+        }
+
+        /* Estilo específico para el botón de cerrar página */
+        .close-page-button {
+            background-color: #ef4444; /* Rojo */
+        }
+        .close-page-button:hover {
+            background-color: #dc2626; /* Rojo más oscuro */
         }
     </style>
 </head>
@@ -102,21 +158,45 @@
             <p class="text-lg sm:text-xl text-gray-400">
                 Características o cualidades de un individuo u objeto que pueden ser medidas o contadas.
             </p>
-            <!-- Contenedor del reproductor de audio -->
-            <div class="audio-player-container">
-                <button id="playPauseButton" class="play-button">
-                    <!-- Icono de Play (SVG) -->
-                    <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    <!-- Icono de Pausa (SVG) - inicialmente oculto -->
-                    <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;">
-                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                    </svg>
-                </button>
-                <!-- Texto al lado del botón de reproducción -->
-                <span class="ml-3 text-lg font-semibold text-gray-300">Tipos de Variables Estadísticas</span>
-                <audio id="myAudio" src="https://github.com/LuiguiP11/MEJA_EI/blob/main/Statistical%20Variables_%20Types%20and%20Measures.mp3?raw=true"></audio>
+            <!-- Contenedor de los reproductores de audio e imagen y botón de cerrar página -->
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6 mb-8">
+                <div class="flex items-center">
+                    <button id="playPauseButton" class="control-button">
+                        <!-- Icono de Play (SVG) -->
+                        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <!-- Icono de Pausa (SVG) - inicialmente oculto -->
+                        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;">
+                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                    </button>
+                    <!-- Texto al lado del botón de reproducción -->
+                    <span class="ml-3 text-lg font-semibold text-gray-300">Tipos de Variables Estadísticas</span>
+                    <audio id="myAudio" src="https://github.com/LuiguiP11/MEJA_EI/blob/main/Statistical%20Variables_%20Types%20and%20Measures.mp3?raw=true"></audio>
+                </div>
+
+                <!-- Nuevo botón para mostrar la imagen -->
+                <div class="flex items-center">
+                    <button id="showImageButton" class="control-button">
+                        <!-- Icono de Imagen (SVG) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                        </svg>
+                    </button>
+                    <span class="ml-3 text-lg font-semibold text-gray-300">Infografía</span>
+                </div>
+
+                <!-- Nuevo botón para cerrar la página -->
+                <div class="flex items-center">
+                    <button id="closePageButton" class="control-button close-page-button">
+                        <!-- Icono de Cerrar (SVG) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                    <!-- Se ha quitado el texto "Cerrar Página" -->
+                </div>
             </div>
         </header>
 
@@ -279,6 +359,14 @@
         </footer>
     </div>
 
+    <!-- Modal para mostrar la imagen -->
+    <div id="imageModal" class="image-modal hidden">
+        <div class="image-modal-content">
+            <button id="closeModalButton" class="close-modal-button">X</button>
+            <img id="modalImage" src="https://github.com/LuiguiP11/MEJA_EI/blob/main/Tipos%20de%20Variables%20Estad%C3%ADsticas.jpg?raw=true" alt="Tipos de Variables Estadísticas">
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card-animation');
@@ -286,8 +374,12 @@
             const playPauseButton = document.getElementById('playPauseButton');
             const playIcon = document.getElementById('playIcon');
             const pauseIcon = document.getElementById('pauseIcon');
+            const showImageButton = document.getElementById('showImageButton');
+            const imageModal = document.getElementById('imageModal');
+            const closeModalButton = document.getElementById('closeModalButton');
+            const closePageButton = document.getElementById('closePageButton'); // Nuevo botón de cerrar página
 
-            // Función para alternar entre reproducir y pausar
+            // Función para alternar entre reproducir y pausar audio
             playPauseButton.addEventListener('click', () => {
                 if (myAudio.paused) {
                     myAudio.play();
@@ -296,7 +388,7 @@
                 }
             });
 
-            // Actualizar el icono cuando el audio se reproduce o se pausa
+            // Actualizar el icono del audio cuando se reproduce o se pausa
             myAudio.addEventListener('play', () => {
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
@@ -307,10 +399,32 @@
                 pauseIcon.style.display = 'none';
             });
 
-            // Restablecer el icono cuando el audio termina
+            // Restablecer el icono del audio cuando termina
             myAudio.addEventListener('ended', () => {
                 playIcon.style.display = 'block';
                 pauseIcon.style.display = 'none';
+            });
+
+            // Función para mostrar el modal de la imagen
+            showImageButton.addEventListener('click', () => {
+                imageModal.classList.remove('hidden');
+            });
+
+            // Función para cerrar el modal de la imagen
+            closeModalButton.addEventListener('click', () => {
+                imageModal.classList.add('hidden');
+            });
+
+            // Cerrar el modal si se hace clic fuera de la imagen (en el fondo oscuro)
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) {
+                    imageModal.classList.add('hidden');
+                }
+            });
+
+            // Función para cerrar la página
+            closePageButton.addEventListener('click', () => {
+                window.close(); // Cierra la ventana o pestaña actual
             });
 
 
