@@ -134,14 +134,6 @@
             background-color: #dc2626; /* Rojo más oscuro */
             transform: scale(1.1);
         }
-
-        /* Estilo específico para el botón de cerrar página */
-        .close-page-button {
-            background-color: #ef4444; /* Rojo */
-        }
-        .close-page-button:hover {
-            background-color: #dc2626; /* Rojo más oscuro */
-        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -158,8 +150,24 @@
             <p class="text-lg sm:text-xl text-gray-400">
                 Características o cualidades de un individuo u objeto que pueden ser medidas o contadas.
             </p>
-            <!-- Contenedor de los reproductores de audio e imagen y botón de cerrar página -->
+            <!-- Contenedor de los reproductores de audio e imagen -->
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6 mb-8">
+                <!-- Controles de volumen -->
+                <div class="flex items-center gap-2">
+                    <button id="volumeDownButton" class="control-button">
+                        <!-- Icono de Volumen Abajo (SVG) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
+                        </svg>
+                    </button>
+                    <button id="volumeUpButton" class="control-button">
+                        <!-- Icono de Volumen Arriba (SVG) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                        </svg>
+                    </button>
+                </div>
+
                 <div class="flex items-center">
                     <button id="playPauseButton" class="control-button">
                         <!-- Icono de Play (SVG) -->
@@ -173,7 +181,7 @@
                     </button>
                     <!-- Texto al lado del botón de reproducción -->
                     <span class="ml-3 text-lg font-semibold text-gray-300">Tipos de Variables Estadísticas</span>
-                    <audio id="myAudio" src="https://github.com/LuiguiP11/MEJA_EI/blob/main/Statistical%20Variables_%20Types%20and%20Measures.mp3?raw=true"></audio>
+                    <audio id="myAudio" src="https://github.com/LuiguiP11/MEJA_EI/raw/main/Statistical%20Variables_%20Types%20and%20Measures.mp3"></audio>
                 </div>
 
                 <!-- Nuevo botón para mostrar la imagen -->
@@ -186,19 +194,10 @@
                     </button>
                     <span class="ml-3 text-lg font-semibold text-gray-300">Infografía</span>
                 </div>
-
-                <!-- Nuevo botón para cerrar la página -->
-                <div class="flex items-center">
-                    <button id="closePageButton" class="control-button close-page-button">
-                        <!-- Icono de Cerrar (SVG) -->
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                        </svg>
-                    </button>
-                    <!-- Se ha quitado el texto "Cerrar Página" -->
-                </div>
             </div>
         </header>
+
+        <!-- Se ha eliminado el contenedor del visualizador de ondas de sonido -->
 
         <!-- Sección de Variables Cualitativas -->
         <section class="mb-12">
@@ -363,7 +362,7 @@
     <div id="imageModal" class="image-modal hidden">
         <div class="image-modal-content">
             <button id="closeModalButton" class="close-modal-button">X</button>
-            <img id="modalImage" src="https://github.com/LuiguiP11/MEJA_EI/blob/main/Tipos%20de%20Variables%20Estad%C3%ADsticas.jpg?raw=true" alt="Tipos de Variables Estadísticas">
+            <img id="modalImage" src="https://github.com/LuiguiP11/MEJA_EI/raw/main/Tipos%20de%20Variables%20Estad%C3%ADsticas.jpg" alt="Tipos de Variables Estadísticas">
         </div>
     </div>
 
@@ -377,32 +376,92 @@
             const showImageButton = document.getElementById('showImageButton');
             const imageModal = document.getElementById('imageModal');
             const closeModalButton = document.getElementById('closeModalButton');
-            const closePageButton = document.getElementById('closePageButton'); // Nuevo botón de cerrar página
+            const volumeUpButton = document.getElementById('volumeUpButton');
+            const volumeDownButton = document.getElementById('volumeDownButton');
+            const audioStatus = document.createElement('span');
+            audioStatus.id = 'audioStatus';
+            audioStatus.className = 'ml-3 text-sm text-gray-500';
+            audioStatus.textContent = 'Cargando audio...';
+            document.querySelector('.flex.items-center span.ml-3').insertAdjacentElement('afterend', audioStatus);
+
+            myAudio.volume = 0.5;
+
+            // Event listener para errores de carga de audio
+            myAudio.addEventListener('error', (e) => {
+                audioStatus.textContent = 'Error al cargar el audio.';
+                audioStatus.style.color = '#F44336';
+                console.error('Error loading audio:', myAudio.error);
+                if (myAudio.error) {
+                    switch (myAudio.error.code) {
+                        case MediaError.MEDIA_ERR_ABORTED:
+                            console.error('The fetching of the media resource was aborted by the user agent or the user.');
+                            break;
+                        case MediaError.MEDIA_ERR_NETWORK:
+                            console.error('A network error caused the media download to fail part-way.');
+                            break;
+                        case MediaError.MEDIA_ERR_DECODE:
+                            console.error('The media resource was decoded but unsupported media format.');
+                            break;
+                        case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                            console.error('The media resource could not be loaded, either because the server or network failed or because the format is not supported.');
+                            break;
+                        default:
+                            console.error('An unknown media error occurred.');
+                            break;
+                    }
+                }
+            });
 
             // Función para alternar entre reproducir y pausar audio
-            playPauseButton.addEventListener('click', () => {
+            playPauseButton.addEventListener('click', async () => {
                 if (myAudio.paused) {
-                    myAudio.play();
+                    try {
+                        await myAudio.play();
+                    } catch (error) {
+                        console.error('Error al intentar reproducir el audio:', error);
+                        audioStatus.textContent = 'Error de reproducción.';
+                        audioStatus.style.color = '#F44336';
+                    }
                 } else {
                     myAudio.pause();
                 }
             });
 
-            // Actualizar el icono del audio cuando se reproduce o se pausa
+            // Actualizar el icono del audio y estado cuando se reproduce
             myAudio.addEventListener('play', () => {
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
+                audioStatus.textContent = 'Reproduciendo...';
+                audioStatus.style.color = '#3b82f6'; // Blue
             });
 
+            // Actualizar el icono del audio y estado cuando se pausa
             myAudio.addEventListener('pause', () => {
                 playIcon.style.display = 'block';
                 pauseIcon.style.display = 'none';
+                audioStatus.textContent = 'Pausado.';
+                audioStatus.style.color = '#FFC107'; // Amber
             });
 
-            // Restablecer el icono del audio cuando termina
+            // Restablecer el icono del audio y estado cuando termina
             myAudio.addEventListener('ended', () => {
                 playIcon.style.display = 'block';
                 pauseIcon.style.display = 'none';
+                audioStatus.textContent = 'Finalizado.';
+                audioStatus.style.color = '#9E9E9E'; // Gray
+            });
+
+            // Funcionalidad de volumen
+            volumeUpButton.addEventListener('click', () => {
+                if (myAudio.volume < 1.0) {
+                    myAudio.volume = Math.min(1.0, myAudio.volume + 0.1);
+                }
+            });
+
+            volumeDownButton.addEventListener('click', () => {
+                if (myAudio.volume > 0.0) {
+                    myAudio.volume = Math.max(0.0, myAudio.volume - 0.1);
+                }
             });
 
             // Función para mostrar el modal de la imagen
@@ -422,64 +481,45 @@
                 }
             });
 
-            // Función para cerrar la página
-            closePageButton.addEventListener('click', () => {
-                window.close(); // Cierra la ventana o pestaña actual
-            });
-
-
             // Efecto de distorsión del cursor en las tarjetas
             document.body.addEventListener('mousemove', (e) => {
                 cards.forEach(card => {
                     const rect = card.getBoundingClientRect();
-                    // Calcular el centro de la tarjeta
                     const centerX = rect.left + rect.width / 2;
                     const centerY = rect.top + rect.height / 2;
 
-                    // Calcular la distancia del cursor al centro de la tarjeta
                     const distanceX = e.clientX - centerX;
                     const distanceY = e.clientY - centerY;
 
-                    // Normalizar la distancia para que esté en un rango manejable (-1 a 1)
-                    // Ajustar el factor para la sensibilidad
                     const normalizedX = distanceX / (rect.width * 0.5);
                     const normalizedY = distanceY / (rect.height * 0.5);
 
-                    // Calcular la rotación para el efecto 3D
-                    const rotateY = normalizedX * 15; // Rotación máxima de 15 grados en Y
-                    const rotateX = -normalizedY * 15; // Rotación máxima de 15 grados en X (invertido para intuitividad)
+                    const rotateY = normalizedX * 15;
+                    const rotateX = -normalizedY * 15;
 
-                    // Calcular la proximidad para efectos de escala y brillo/sombra
                     const maxDistance = Math.sqrt((rect.width / 2) ** 2 + (rect.height / 2) ** 2);
                     const currentDistance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
                     const proximity = 1 - Math.min(1, currentDistance / maxDistance);
 
-                    // Aplicar un escalado más pronunciado cuando el cursor está cerca
-                    const scale = 1 + (proximity * 0.05); // Escala máxima del 5%
+                    const scale = 1 + (proximity * 0.05);
+                    const brightness = 1 + (proximity * 0.07);
 
-                    // Aplicar un ligero cambio de brillo
-                    const brightness = 1 + (proximity * 0.07); // Brillo máximo del 7%
+                    const shadowOffsetX = 8 + (normalizedX * 10 * proximity);
+                    const shadowOffsetY = 8 + (normalizedY * 10 * proximity);
+                    const shadowBlur = 15 + (15 * proximity);
+                    const shadowSpread = 0 + (5 * proximity);
+                    const whiteShadowColor = `rgba(255, 255, 255, 0.7)`;
 
-                    // Sombra blanca dinámica en el lado derecho y abajo sin degradado (opacidad fija)
-                    const shadowOffsetX = 8 + (normalizedX * 10 * proximity); // Offset derecho, aumenta con proximidad y posición X del cursor
-                    const shadowOffsetY = 8 + (normalizedY * 10 * proximity); // Offset inferior, aumenta con proximidad y posición Y del cursor
-                    const shadowBlur = 15 + (15 * proximity); // Desenfoque de la sombra, aumenta con proximidad
-                    const shadowSpread = 0 + (5 * proximity); // Expansión de la sombra, aumenta con proximidad
-                    const whiteShadowColor = `rgba(255, 255, 255, 0.7)`; // Color blanco con opacidad fija del 70%
-
-                    // Aplicar las transformaciones y filtros CSS
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
                     card.style.filter = `brightness(${brightness})`;
                     card.style.boxShadow = `${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlur}px ${shadowSpread}px ${whiteShadowColor}`;
                 });
             });
 
-            // Restablecer las transformaciones cuando el cursor sale del cuerpo del documento
             document.body.addEventListener('mouseleave', () => {
                 cards.forEach(card => {
                     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
                     card.style.filter = 'brightness(1)';
-                    // Restablecer a la sombra blanca inicial definida en CSS (opacidad fija del 50%)
                     card.style.boxShadow = '8px 8px 15px rgba(255, 255, 255, 0.5)';
                 });
             });
