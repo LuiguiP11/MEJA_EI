@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Conceptual: Tipos de Variables Estadísticas</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Fuente Inter para una mejor legibilidad */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Fondo oscuro */
+            color: #e2e8f0; /* Color de texto principal claro */
+            line-height: 1.6;
+            overflow-x: hidden; /* Evitar scroll horizontal en caso de efectos */
+        }
+
+        /* Animación de entrada para las tarjetas */
+        .card-animation {
+            animation: fadeInScale 0.7s ease-out forwards;
+            opacity: 0;
+            transform: scale(0.95);
+            /* Transiciones para los efectos del cursor, incluyendo box-shadow */
+            transition: transform 0.3s ease-out, filter 0.3s ease-out, box-shadow 0.3s ease-out;
+            transform-style: preserve-3d; /* Necesario para transformaciones 3D */
+            will-change: transform, filter, box-shadow; /* Optimización de rendimiento */
+            /* Sombra blanca inicial sutil derecha/abajo sin degradado (opacidad fija) */
+            box-shadow: 8px 8px 15px rgba(255, 255, 255, 0.5); /* Opacidad fija del 50% */
+        }
+
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Retraso para las animaciones secuenciales */
+        .card-delay-1 { animation-delay: 0.1s; }
+        .card-delay-2 { animation-delay: 0.2s; }
+        .card-delay-3 { animation-delay: 0.3s; }
+        .card-delay-4 { animation-delay: 0.4s; }
+        .card-delay-5 { animation-delay: 0.5s; }
+        .card-delay-6 { animation-delay: 0.6s; }
+        .card-delay-7 { animation-delay: 0.7s; }
+        .card-delay-8 { animation-delay: 0.8s; }
+        .card-delay-9 { animation-delay: 0.9s; }
+        .card-delay-10 { animation-delay: 1.0s; }
+        .card-delay-11 { animation-delay: 1.1s; }
+
+        /* Estilos para el botón de reproducción de audio */
+        .audio-player-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1.5rem; /* Espacio superior */
+            margin-bottom: 2.5rem; /* Espacio inferior */
+        }
+
+        .play-button {
+            background-color: #3b82f6; /* Azul de Tailwind */
+            color: white;
+            border-radius: 9999px; /* Completamente redondo */
+            padding: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .play-button:hover {
+            background-color: #2563eb; /* Azul más oscuro al pasar el ratón */
+            transform: scale(1.05);
+        }
+
+        .play-button svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            fill: currentColor;
+        }
+
+        .audio-controls {
+            display: none; /* Ocultar controles por defecto, se mostrarán con JS */
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <!-- Cintillo blanco en la parte superior -->
+    <div class="w-full bg-white py-4 mb-8 rounded-lg shadow-md">
+        <img src="https://sgccc.org.gt/wp-content/uploads/2021/03/LOGO-USAC.-Rec-1.png" alt="Logo USAC" class="mx-auto w-24 sm:w-32 h-auto">
+    </div>
+
+    <div class="max-w-6xl mx-auto bg-gray-800 shadow-xl rounded-xl p-6 sm:p-10 lg:p-12 text-gray-200">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-blue-400 mb-4 animate-fade-in">
+                Mapa Conceptual: Tipos de Variables Estadísticas
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-400">
+                Características o cualidades de un individuo u objeto que pueden ser medidas o contadas.
+            </p>
+            <!-- Contenedor del reproductor de audio -->
+            <div class="audio-player-container">
+                <button id="playPauseButton" class="play-button">
+                    <!-- Icono de Play (SVG) -->
+                    <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <!-- Icono de Pausa (SVG) - inicialmente oculto -->
+                    <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+                <!-- Texto al lado del botón de reproducción -->
+                <span class="ml-3 text-lg font-semibold text-gray-300">Tipos de Variables Estadísticas</span>
+                <audio id="myAudio" src="https://github.com/LuiguiP11/MEJA_EI/blob/main/Statistical%20Variables_%20Types%20and%20Measures.mp3?raw=true"></audio>
+            </div>
+        </header>
+
+        <!-- Sección de Variables Cualitativas -->
+        <section class="mb-12">
+            <h2 class="text-3xl sm:text-4xl font-bold text-purple-400 mb-6 text-center animate-fade-in card-delay-1">
+                I. Variables Cualitativas (Categóricas)
+            </h2>
+            <p class="text-md sm:text-lg text-gray-300 mb-8 text-center">
+                Describen cualidades, características o atributos que no pueden ser medidos numéricamente.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tarjeta Nominal -->
+                <div class="bg-gradient-to-br from-purple-800 to-indigo-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 card-animation card-delay-2">
+                    <h3 class="text-2xl font-semibold text-purple-300 mb-3">A. Nominales</h3>
+                    <p class="text-gray-300 mb-4">
+                        No tienen un orden intrínseco o jerarquía entre sus categorías. Las categorías son simplemente diferentes entre sí.
+                    </p>
+                    <h4 class="text-lg font-medium text-purple-400 mb-2">Ejemplos:</h4>
+                    <ul class="list-disc list-inside text-gray-400">
+                        <li>Color de ojos (azul, marrón, verde)</li>
+                        <li>Género (masculino, femenino, no binario)</li>
+                        <li>Estado civil (soltero, casado, divorciado, viudo)</li>
+                        <li>Tipo de sangre (A, B, AB, O)</li>
+                    </ul>
+                </div>
+
+                <!-- Tarjeta Ordinal -->
+                <div class="bg-gradient-to-br from-blue-800 to-cyan-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 card-animation card-delay-3">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-3">B. Ordinales</h3>
+                    <p class="text-gray-300 mb-4">
+                        Tienen un orden o una jerarquía natural entre sus categorías, pero las diferencias entre las categorías no son medibles o uniformes.
+                    </p>
+                    <h4 class="text-lg font-medium text-blue-400 mb-2">Ejemplos:</h4>
+                    <ul class="list-disc list-inside text-gray-400">
+                        <li>Nivel educativo (primaria, secundaria, universitario, posgrado)</li>
+                        <li>Clasificación de un producto (malo, regular, bueno, excelente)</li>
+                        <li>Grado de satisfacción (muy insatisfecho, insatisfecho, neutro, satisfecho, muy satisfecho)</li>
+                        <li>Tallas de ropa (S, M, L, XL)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Variables Cuantitativas -->
+        <section class="mb-12">
+            <h2 class="text-3xl sm:text-4xl font-bold text-green-400 mb-6 text-center animate-fade-in card-delay-4">
+                II. Variables Cuantitativas (Numéricas)
+            </h2>
+            <p class="text-md sm:text-lg text-gray-300 mb-8 text-center">
+                Describen características que pueden ser medidas numéricamente. Los valores resultantes son números que representan una cantidad.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tarjeta Discreta -->
+                <div class="bg-gradient-to-br from-green-800 to-lime-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 card-animation card-delay-5">
+                    <h3 class="text-2xl font-semibold text-green-300 mb-3">A. Discretas</h3>
+                    <p class="text-gray-300 mb-4">
+                        Toman valores numéricos enteros y contables. Generalmente, resultan de un proceso de conteo y no admiten valores intermedios entre dos consecutivos.
+                    </p>
+                    <h4 class="text-lg font-medium text-green-400 mb-2">Ejemplos:</h4>
+                    <ul class="list-disc list-inside text-gray-400">
+                        <li>Número de hijos en una familia (0, 1, 2, 3...)</li>
+                        <li>Cantidad de coches en un estacionamiento (10, 15, 20...)</li>
+                        <li>Número de goles en un partido de fútbol (0, 1, 2...)</li>
+                        <li>Cantidad de errores en un examen</li>
+                    </ul>
+                </div>
+
+                <!-- Tarjeta Continua -->
+                <div class="bg-gradient-to-br from-yellow-800 to-amber-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 card-animation card-delay-6">
+                    <h3 class="text-2xl font-semibold text-yellow-300 mb-3">B. Continuas</h3>
+                    <p class="text-gray-300 mb-4">
+                        Pueden tomar cualquier valor dentro de un rango determinado (incluyendo decimales y fracciones). Generalmente, resultan de un proceso de medición.
+                    </p>
+                    <h4 class="text-lg font-medium text-yellow-400 mb-2">Ejemplos:</h4>
+                    <ul class="list-disc list-inside text-gray-400">
+                        <li>Altura de una persona (1.75 m, 1.80 m, 1.63 m...)</li>
+                        <li>Peso de un objeto (65.3 kg, 70.1 kg, 58.9 kg...)</li>
+                        <li>Temperatura ambiente (25.5 °C, 30.2 °C, 18.7 °C...)</li>
+                        <li>Tiempo de duración de una llamada (5.2 minutos, 10.7 minutos...)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Representación de Variables -->
+        <section class="mb-12">
+            <h2 class="text-3xl sm:text-4xl font-bold text-red-400 mb-6 text-center animate-fade-in card-delay-7">
+                III. Representación de Variables
+            </h2>
+            <p class="text-md sm:text-lg text-gray-300 mb-8 text-center">
+                Las variables estadísticas se pueden representar visualmente para facilitar su análisis e interpretación.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tarjeta Tablas de Frecuencia -->
+                <div class="bg-gradient-to-br from-red-800 to-orange-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 card-animation card-delay-8">
+                    <h3 class="text-2xl font-semibold text-red-300 mb-3">A. Tablas de Frecuencia</h3>
+                    <p class="text-gray-300 mb-4">
+                        Organizan los datos en categorías o intervalos, mostrando la frecuencia con la que aparece cada valor.
+                    </p>
+                    <h4 class="text-lg font-medium text-red-400 mb-2">Ejemplos:</h4>
+                    <ul class="list-disc list-inside text-gray-400">
+                        <li>Tabla de distribución de edades</li>
+                        <li>Frecuencia de respuestas en una encuesta</li>
+                    </ul>
+                </div>
+
+                <!-- Tarjeta Gráficos Estadísticos -->
+                <div class="bg-gradient-to-br from-orange-800 to-yellow-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 card-animation card-delay-9">
+                    <h3 class="text-2xl font-semibold text-orange-300 mb-3">B. Gráficos Estadísticos</h3>
+                    <p class="text-gray-300 mb-4">
+                        Representaciones visuales de los datos que permiten identificar patrones, tendencias y relaciones.
+                    </p>
+                    <h4 class="text-lg font-medium text-orange-400 mb-2">Ejemplos:</h4>
+                    <ul class="list-disc list-inside text-gray-400">
+                        <li>Gráficos de barras (para cualitativas o discretas)</li>
+                        <li>Histogramas (para continuas)</li>
+                        <li>Gráficos circulares (para proporciones)</li>
+                        <li>Diagramas de dispersión (para relaciones entre variables)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Medidas Estadísticas -->
+        <section class="mb-8">
+            <h2 class="text-3xl sm:text-4xl font-bold text-teal-400 mb-6 text-center animate-fade-in card-delay-10">
+                IV. Medidas Estadísticas
+            </h2>
+            <p class="text-md sm:text-lg text-gray-300 mb-8 text-center">
+                Valores numéricos que resumen y describen las características de un conjunto de datos.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-8">
+                <!-- Tarjeta Medidas de Centralización -->
+                <div class="bg-gradient-to-br from-teal-800 to-emerald-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 card-animation card-delay-11">
+                    <h3 class="text-2xl font-semibold text-teal-300 mb-3">A. Medidas de Centralización</h3>
+                    <p class="text-gray-300 mb-4">
+                        Nos indican en torno a qué valores se agrupan los datos.
+                    </p>
+                    <h4 class="text-lg font-medium text-teal-400 mb-2">Ejemplos:</h4>
+                    <ul class="list-disc list-inside text-gray-400">
+                        <li><strong class="text-teal-300">Media Aritmética:</strong> El promedio de todos los valores.</li>
+                        <li><strong class="text-teal-300">Moda:</strong> El valor que aparece con mayor frecuencia en un conjunto de datos.</li>
+                        <li><strong class="text-teal-300">Mediana:</strong> El valor central en un conjunto de datos ordenado.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Información adicional al final -->
+        <footer class="text-center text-gray-400 text-sm mt-12 pt-6 border-t border-gray-700">
+            <p>Lic. Luis Ygnacio Ponce Sierra</p>
+            <p>Maestría en Educación para Personas Jóvenes y Adultos</p>
+            <p>Curso: MEJA3S1 Estadística inferencial</p>
+            <p>Docente: Dr. Mario García Valiente</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-animation');
+            const myAudio = document.getElementById('myAudio');
+            const playPauseButton = document.getElementById('playPauseButton');
+            const playIcon = document.getElementById('playIcon');
+            const pauseIcon = document.getElementById('pauseIcon');
+
+            // Función para alternar entre reproducir y pausar
+            playPauseButton.addEventListener('click', () => {
+                if (myAudio.paused) {
+                    myAudio.play();
+                } else {
+                    myAudio.pause();
+                }
+            });
+
+            // Actualizar el icono cuando el audio se reproduce o se pausa
+            myAudio.addEventListener('play', () => {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            });
+
+            myAudio.addEventListener('pause', () => {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            });
+
+            // Restablecer el icono cuando el audio termina
+            myAudio.addEventListener('ended', () => {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            });
+
+
+            // Efecto de distorsión del cursor en las tarjetas
+            document.body.addEventListener('mousemove', (e) => {
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    // Calcular el centro de la tarjeta
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+
+                    // Calcular la distancia del cursor al centro de la tarjeta
+                    const distanceX = e.clientX - centerX;
+                    const distanceY = e.clientY - centerY;
+
+                    // Normalizar la distancia para que esté en un rango manejable (-1 a 1)
+                    // Ajustar el factor para la sensibilidad
+                    const normalizedX = distanceX / (rect.width * 0.5);
+                    const normalizedY = distanceY / (rect.height * 0.5);
+
+                    // Calcular la rotación para el efecto 3D
+                    const rotateY = normalizedX * 15; // Rotación máxima de 15 grados en Y
+                    const rotateX = -normalizedY * 15; // Rotación máxima de 15 grados en X (invertido para intuitividad)
+
+                    // Calcular la proximidad para efectos de escala y brillo/sombra
+                    const maxDistance = Math.sqrt((rect.width / 2) ** 2 + (rect.height / 2) ** 2);
+                    const currentDistance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+                    const proximity = 1 - Math.min(1, currentDistance / maxDistance);
+
+                    // Aplicar un escalado más pronunciado cuando el cursor está cerca
+                    const scale = 1 + (proximity * 0.05); // Escala máxima del 5%
+
+                    // Aplicar un ligero cambio de brillo
+                    const brightness = 1 + (proximity * 0.07); // Brillo máximo del 7%
+
+                    // Sombra blanca dinámica en el lado derecho y abajo sin degradado (opacidad fija)
+                    const shadowOffsetX = 8 + (normalizedX * 10 * proximity); // Offset derecho, aumenta con proximidad y posición X del cursor
+                    const shadowOffsetY = 8 + (normalizedY * 10 * proximity); // Offset inferior, aumenta con proximidad y posición Y del cursor
+                    const shadowBlur = 15 + (15 * proximity); // Desenfoque de la sombra, aumenta con proximidad
+                    const shadowSpread = 0 + (5 * proximity); // Expansión de la sombra, aumenta con proximidad
+                    const whiteShadowColor = `rgba(255, 255, 255, 0.7)`; // Color blanco con opacidad fija del 70%
+
+                    // Aplicar las transformaciones y filtros CSS
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
+                    card.style.filter = `brightness(${brightness})`;
+                    card.style.boxShadow = `${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlur}px ${shadowSpread}px ${whiteShadowColor}`;
+                });
+            });
+
+            // Restablecer las transformaciones cuando el cursor sale del cuerpo del documento
+            document.body.addEventListener('mouseleave', () => {
+                cards.forEach(card => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+                    card.style.filter = 'brightness(1)';
+                    // Restablecer a la sombra blanca inicial definida en CSS (opacidad fija del 50%)
+                    card.style.boxShadow = '8px 8px 15px rgba(255, 255, 255, 0.5)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
